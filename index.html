@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>COVID-19
+    </title>
+
+    <link rel="icon" href="images\virus.png" type="image/png">
+   
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/flexslider.css">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,700" rel="stylesheet">
+
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/dataviz.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/4/plugins/timeline.js"></script>
+
+
+<script >
+
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_dataviz);
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+
+
+
+var chart = am4core.create('chart1div', am4charts.XYChart)
+chart.colors.step = 2;
+
+chart.legend = new am4charts.Legend()
+chart.legend.position = 'top'
+chart.legend.paddingBottom = 20
+chart.legend.labels.template.maxWidth = 95
+
+var xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
+xAxis.dataFields.category = 'category'
+xAxis.renderer.cellStartLocation = 0.1
+xAxis.renderer.cellEndLocation = 0.9
+xAxis.renderer.grid.template.location = 0;
+
+var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+yAxis.min = 0;
+
+function createSeries(value, name) {
+    var series = chart.series.push(new am4charts.ColumnSeries())
+    series.dataFields.valueY = value
+    series.dataFields.categoryX = 'category'
+    series.name = name
+
+    series.events.on("hidden", arrangeColumns);
+    series.events.on("shown", arrangeColumns);
+
+    var bullet = series.bullets.push(new am4charts.LabelBullet())
+    bullet.interactionsEnabled = false
+    bullet.dy = 30;
+    bullet.label.text = '{valueY}'
+    bullet.label.fill = am4core.color('#ffffff')
+
+    return series;
+}
+
+chart.data = [
+    {
+        category: 'Ferizaj',
+        first: 2,
+        second: 93,
+        third: 1
+    },
+    {
+        category: 'Malishevë',
+        first: 1,
+        second: 70,
+        third: 55
+    },
+    {
+        category: 'Prishtinë',
+        first: 2,
+        second: 65,
+        third: 2
+    },
+    {
+        category: 'Viti',
+        first: 0,
+        second: 49,
+        third: 2
+    },
+     {
+        category: 'Pejë',
+        first: 1,
+        second: 47,
+        third: 4
+    },
+     {
+        category: 'Prizren',
+        first: 2,
+        second: 46,
+        third: 2
+    },
+     {
+        category: 'Kamenicë',
+        first: 0,
+        second: 34,
+        third: 3
+    },
+     {
+        category: 'Mitrovicë Veriore',
+        first: 2,
+        second: 35,
+        third: 0
+    }
+]
+
+
+createSeries('first', 'Viktima');
+createSeries('second', 'Të infektuar');
+createSeries('third', 'Të shëruar');
+
+function arrangeColumns() {
+
+    var series = chart.series.getIndex(0);
+
+    var w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
+    if (series.dataItems.length > 1) {
+        var x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
+        var x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
+        var delta = ((x1 - x0) / chart.series.length) * w;
+        if (am4core.isNumber(delta)) {
+            var middle = chart.series.length / 2;
+
+            var newIndex = 0;
+            chart.series.each(function(series) {
+                if (!series.isHidden && !series.isHiding) {
+                    series.dummyData = newIndex;
+                    newIndex++;
+                }
+                else {
+                    series.dummyData = chart.series.indexOf(series);
+                }
+            })
+            var visibleCount = newIndex;
+            var newMiddle = visibleCount / 2;
+
+            chart.series.each(function(series) {
+                var trueIndex = chart.series.indexOf(series);
+                var newIndex = series.dummyData;
+
+                var dx = (newIndex - trueIndex + middle - newMiddle) * delta
+
+                series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+            })
+        }
+    }
+}
+
+// Themes begin
+am4core.useTheme(am4themes_dataviz);
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+
+
+
+var chart = am4core.create('chart2div', am4charts.XYChart)
+chart.colors.step = 2;
+
+chart.legend = new am4charts.Legend()
+chart.legend.position = 'top'
+chart.legend.paddingBottom = 20
+chart.legend.labels.template.maxWidth = 95
+
+var xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
+xAxis.dataFields.category = 'category'
+xAxis.renderer.cellStartLocation = 0.1
+xAxis.renderer.cellEndLocation = 0.9
+xAxis.renderer.grid.template.location = 0;
+
+var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+yAxis.min = 0;
+
+function createSeries(value, name) {
+    var series = chart.series.push(new am4charts.ColumnSeries())
+    series.dataFields.valueY = value
+    series.dataFields.categoryX = 'category'
+    series.name = name
+
+    series.events.on("hidden", arrangeColumns);
+    series.events.on("shown", arrangeColumns);
+
+    var bullet = series.bullets.push(new am4charts.LabelBullet())
+    bullet.interactionsEnabled = false
+    bullet.dy = 30;
+    bullet.label.text = '{valueY}'
+    bullet.label.fill = am4core.color('#ffffff')
+
+    return series;
+}
+
+chart.data = [
+    {
+        category: 'Suharekë',
+        first: 1,
+        second: 33,
+        third: 1
+    },
+    {
+        category: 'Gjilan',
+        first: 1,
+        second: 29,
+        third: 4
+    },
+    {
+        category: 'Vuçitërrn',
+        first: 1,
+        second: 24,
+        third: 2
+    },
+    {
+        category: 'Zubin Potok',
+        first: 0,
+        second: 20,
+        third: 0
+    },
+     {
+        category: 'Zveçan',
+        first: 1,
+        second: 20,
+        third: 0
+    },
+     {
+        category: 'Shtime',
+        first: 0,
+        second: 17,
+        third: 1
+    },
+     {
+        category: 'Gjakovë',
+        first: 1,
+        second: 16,
+        third: 4
+    },
+     {
+        category: 'Lipjan',
+        first: 0,
+        second: 15,
+        third: 0
+    }
+]
+
+
+createSeries('first', 'Viktima');
+createSeries('second', 'Të infektuar');
+createSeries('third', 'Të shëruar');
+
+function arrangeColumns() {
+
+    var series = chart.series.getIndex(0);
+
+    var w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
+    if (series.dataItems.length > 1) {
+        var x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
+        var x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
+        var delta = ((x1 - x0) / chart.series.length) * w;
+        if (am4core.isNumber(delta)) {
+            var middle = chart.series.length / 2;
+
+            var newIndex = 0;
+            chart.series.each(function(series) {
+                if (!series.isHidden && !series.isHiding) {
+                    series.dummyData = newIndex;
+                    newIndex++;
+                }
+                else {
+                    series.dummyData = chart.series.indexOf(series);
+                }
+            })
+            var visibleCount = newIndex;
+            var newMiddle = visibleCount / 2;
+
+            chart.series.each(function(series) {
+                var trueIndex = chart.series.indexOf(series);
+                var newIndex = series.dummyData;
+
+                var dx = (newIndex - trueIndex + middle - newMiddle) * delta
+
+                series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+            })
+        }
+    }
+}
+
+// Themes begin
+am4core.useTheme(am4themes_dataviz);
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+
+
+
+var chart = am4core.create('chart3div', am4charts.XYChart)
+chart.colors.step = 2;
+
+chart.legend = new am4charts.Legend()
+chart.legend.position = 'top'
+chart.legend.paddingBottom = 20
+chart.legend.labels.template.maxWidth = 95
+
+var xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
+xAxis.dataFields.category = 'category'
+xAxis.renderer.cellStartLocation = 0.1
+xAxis.renderer.cellEndLocation = 0.9
+xAxis.renderer.grid.template.location = 0;
+
+var yAxis = chart.yAxes.push(new am4charts.ValueAxis());
+yAxis.min = 0;
+
+function createSeries(value, name) {
+    var series = chart.series.push(new am4charts.ColumnSeries())
+    series.dataFields.valueY = value
+    series.dataFields.categoryX = 'category'
+    series.name = name
+
+    series.events.on("hidden", arrangeColumns);
+    series.events.on("shown", arrangeColumns);
+
+    var bullet = series.bullets.push(new am4charts.LabelBullet())
+    bullet.interactionsEnabled = false
+    bullet.dy = 30;
+    bullet.label.text = '{valueY}'
+    bullet.label.fill = am4core.color('#ffffff')
+
+    return series;
+}
+
+chart.data = [
+    {
+        category: 'Podujevë',
+        first: 1,
+        second: 9,
+        third: 3
+    },
+    {
+        category: 'Istog',
+        first: 1,
+        second: 7,
+        third: 0
+    },
+    {
+        category: 'Fushë Kosovë',
+        first: 0,
+        second: 7,
+        third: 0
+    },
+    {
+        category: 'Klinë',
+        first: 0,
+        second: 5,
+        third: 1
+    },
+     {
+        category: 'Skënderaj',
+        first: 0,
+        second: 5,
+        third: 0
+    },
+     {
+        category: 'Deçan',
+        first: 0,
+        second: 1,
+        third: 0
+    },
+     {
+        category: 'Obiliq',
+        first: 0,
+        second: 1,
+        third: 1
+    },
+     {
+        category: 'Rahovec',
+        first: 0,
+        second: 1,
+        third: 1
+    }
+]
+
+
+createSeries('first', 'Viktima');
+createSeries('second', 'Të infektuar');
+createSeries('third', 'Të shëruar');
+
+function arrangeColumns() {
+
+    var series = chart.series.getIndex(0);
+
+    var w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
+    if (series.dataItems.length > 1) {
+        var x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
+        var x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
+        var delta = ((x1 - x0) / chart.series.length) * w;
+        if (am4core.isNumber(delta)) {
+            var middle = chart.series.length / 2;
+
+            var newIndex = 0;
+            chart.series.each(function(series) {
+                if (!series.isHidden && !series.isHiding) {
+                    series.dummyData = newIndex;
+                    newIndex++;
+                }
+                else {
+                    series.dummyData = chart.series.indexOf(series);
+                }
+            })
+            var visibleCount = newIndex;
+            var newMiddle = visibleCount / 2;
+
+            chart.series.each(function(series) {
+                var trueIndex = chart.series.indexOf(series);
+                var newIndex = series.dummyData;
+
+                var dx = (newIndex - trueIndex + middle - newMiddle) * delta
+
+                series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+                series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
+            })
+        }
+    }
+}
+
+// Themes begin
+am4core.useTheme(am4themes_dataviz);
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+var chart = am4core.create("chart4div", am4charts.PieChart3D);
+chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+chart.data = [
+  {
+    country: "Distrikti i Prizrenit",
+    litres: 149
+  },
+  {
+    country: "Distrikti i Ferizajit",
+    litres: 117
+  },
+  {
+    country: "Distrikti i Mitrovicës",
+    litres: 115
+  },
+  {
+    country: "Distrikti i Gjilanit",
+    litres: 112
+  },
+  {
+    country: "Distrikti i Prishtinës",
+    litres: 99
+  },
+  {
+    country: "Distrikti i Pejës",
+    litres: 59
+  },
+  {
+    country: "Distrikti i Gjakovës",
+    litres: 18
+  },
+];
+
+chart.innerRadius = am4core.percent(40);
+chart.depth = 120;
+
+chart.legend = new am4charts.Legend();
+
+var series = chart.series.push(new am4charts.PieSeries3D());
+series.dataFields.value = "litres";
+series.dataFields.depthValue = "litres";
+series.dataFields.category = "country";
+series.slices.template.cornerRadius = 5;
+series.colors.step = 3;
+
+
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+var chart = am4core.create("chart5div", am4plugins_timeline.CurveChart);
+chart.curveContainer.padding(0, 100, 0, 120);
+chart.maskBullets = false;
+
+var colorSet = new am4core.ColorSet();
+
+chart.data = [{
+    "category": "",
+    "year": "14",
+    "size": 387,
+    "text": "+3%"
+  },
+  {
+    "category": "",
+    "year": "15",
+    "size": 423,
+    "text": "+9%"
+  },
+  {
+    "category": "",
+    "year": "16",
+    "size": 449,
+    "text": "+6%"
+  },
+  {
+    "category": "",
+    "year": "17",
+    "size": 480,
+    "text": "+7%"
+  },
+  {
+    "category": "",
+    "year": "18",
+    "size": 510,
+    "text": "+6%"
+  },
+  {
+    "category": "",
+    "year": "19",
+    "size": 561,
+    "text": "+10%"
+  },
+  {
+    "category": "",
+    "year": "20",
+    "size": 598,
+    "text": "+7%"
+  },
+  {
+    "category": "",
+    "year": "21",
+    "size": 604,
+    "text": "+1%"
+  },
+  {
+    "category": "",
+    "year": "22",
+    "size": 630,
+    "text": "+4%"
+  },
+  {
+    "category": "",
+    "year": "23",
+    "size": 669,
+    "text": "+6%"
+  }
+];
+
+chart.dateFormatter.inputDateFormat = "yyyy";
+
+chart.fontSize = 11;
+chart.tooltipContainer.fontSize = 11;
+
+var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+categoryAxis.dataFields.category = "category";
+categoryAxis.renderer.grid.template.disabled = true;
+
+var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.renderer.points = [{ x: -400, y: 0 }, { x: 0, y: 50 }, { x: 400, y: 0 }]
+dateAxis.renderer.polyspline.tensionX = 0.8;
+dateAxis.renderer.grid.template.disabled = true;
+dateAxis.renderer.line.strokeDasharray = "1,4";
+dateAxis.baseInterval = {period:"day", count:1}; // otherwise initial animation will be not smooth
+
+dateAxis.renderer.labels.template.disabled = true;
+
+var series = chart.series.push(new am4plugins_timeline.CurveLineSeries());
+series.strokeOpacity = 0;
+series.dataFields.dateX = "year";
+series.dataFields.categoryY = "category";
+series.dataFields.value = "size";
+series.baseAxis = categoryAxis;
+
+var interfaceColors = new am4core.InterfaceColorSet();
+
+series.tooltip.pointerOrientation = "down";
+
+var distance = 100;
+var angle = 60;
+
+var bullet = series.bullets.push(new am4charts.Bullet());
+
+var line = bullet.createChild(am4core.Line);
+line.adapter.add("stroke", function(fill, target) {
+  if (target.dataItem) {
+    return chart.colors.getIndex(target.dataItem.index)
+  }
+});
+
+line.x1 = 0;
+line.y1 = 0;
+line.y2 = 0;
+line.x2 = distance - 10;
+line.strokeDasharray = "1,3";
+
+var circle = bullet.createChild(am4core.Circle);
+circle.radius = 30;
+circle.fillOpacity = 1;
+circle.strokeOpacity = 0;
+
+var circleHoverState = circle.states.create("hover");
+circleHoverState.properties.scale = 1.3;
+
+series.heatRules.push({ target: circle, min: 20, max: 50, property: "radius" });
+circle.adapter.add("fill", function(fill, target) {
+  if (target.dataItem) {
+    return chart.colors.getIndex(target.dataItem.index)
+  }
+});
+circle.tooltipText = "{text}: {value}";
+circle.adapter.add("tooltipY", function(tooltipY, target){
+  return -target.pixelRadius - 4;
+});
+
+var yearLabel = bullet.createChild(am4core.Label);
+yearLabel.text = "{year}";
+yearLabel.strokeOpacity = 0;
+yearLabel.fill = am4core.color("#fff");
+yearLabel.horizontalCenter = "middle";
+yearLabel.verticalCenter = "middle";
+yearLabel.interactionsEnabled = false;
+
+var label = bullet.createChild(am4core.Label);
+label.propertyFields.text = "text";
+label.strokeOpacity = 0;
+label.horizontalCenter = "right";
+label.verticalCenter = "middle";
+
+label.adapter.add("opacity", function(opacity, target) {
+  if(target.dataItem){
+    var index = target.dataItem.index;
+    var line = target.parent.children.getIndex(0);
+
+    if (index % 2 == 0) {
+      target.y = -distance * am4core.math.sin(-angle);
+      target.x = -distance * am4core.math.cos(-angle);
+      line.rotation = -angle - 180;
+      target.rotation = -angle;
+    }
+    else {
+      target.y = -distance * am4core.math.sin(angle);
+      target.x = -distance * am4core.math.cos(angle);
+      line.rotation = angle - 180;
+      target.rotation = angle;
+    }
+  }
+  return 1;
+});
+
+var outerCircle = bullet.createChild(am4core.Circle);
+outerCircle.radius = 30;
+outerCircle.fillOpacity = 0;
+outerCircle.strokeOpacity = 0;
+outerCircle.strokeDasharray = "1,3";
+
+var hoverState = outerCircle.states.create("hover");
+hoverState.properties.strokeOpacity = 0.8;
+hoverState.properties.scale = 1.5;
+
+outerCircle.events.on("over", function(event){
+  var circle = event.target.parent.children.getIndex(1);
+  circle.isHover = true;
+  event.target.stroke = circle.fill;
+  event.target.radius = circle.pixelRadius;
+  event.target.animate({property: "rotation", from: 0, to: 360}, 4000, am4core.ease.sinInOut);
+});
+
+outerCircle.events.on("out", function(event){
+  var circle = event.target.parent.children.getIndex(1);
+  circle.isHover = false;
+});
+
+chart.scrollbarX = new am4core.Scrollbar();
+chart.scrollbarX.opacity = 0.5;
+chart.scrollbarX.width = am4core.percent(50);
+chart.scrollbarX.align = "center";
+
+}); // end am4core.ready()
+</script>
+
+
+    
+  </head>
+  
+  <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
+  
+
+   
+    <nav class="navbar navbar-expand-lg site-navbar navbar-light bg-light" id="pb-navbar">
+
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        
+        <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample09">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#section-home">Ç'është COVID-19?</a></li>
+            <li class="nav-item"><a class="nav-link" href="#section-about">Simptomat</a></li>
+            <li class="nav-item"><a class="nav-link" href="#section-services">Parandalimi</a></li>
+            <li class="nav-item"><a class="nav-link" href="#section-portfolio">Trajtimi</a></li>
+            <li class="nav-item"><a class="nav-link" href="#section-resume">Statistikat</a></li>
+            <li class="nav-item"><a class="nav-link" href="#section-blog">Orari i lëvizjes</a></li>
+            <li class="nav-item"><a class="nav-link" href="#section-contact">Kontakti</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+
+   
+    
+    <section class="site-hero" style="background-image: url(images/foto2.jpg);" id="section-home" data-stellar-background-ratio="0.5">
+      <div class="container">
+        <div class="row intro-text align-items-center justify-content-center">
+          <div class="col-md-10 text-center">
+            <h1 class="site-heading site-animate">Ç'është <strong>COVID-19</strong>?</h1>
+            <p class="lead site-subheading mb-4 site-animate">Koronaviruset  janë familja e viruseve të cilat shkaktojnë sëmundje nga një rrufë e lehtë deri në sëmundje më të rënda si Sindroma Respiratore e Lindjes së Mesme (Middle East Respiratory Syndrome MERS) dhe Sindroma e Rëndë Respiratore Akute (Severe Acute Respiratory Syndrome SARS).
+            Koronavirusi i ri (ang. Corona Virus Desease 2019 - COVID-19) është një lloj  i ri i koronavirusit i cili nuk është identifikuar më parë tek njerëzit.</p>
+            
+          </div>
+        </div>
+      </div>
+    </section> <!-- section -->
+
+
+    <section class="site-section bg-light" id="section-about">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <div class="section-heading text-center">
+              <h2> <strong>Simptomat e COVID-19</strong></h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+
+              <div class="block-47 d-flex mb-5">
+                <div class="block-47-image">
+                  <img src="images/fever1.jpg" alt="Image placeholder" class="img-fluid" id="img-block">
+                </div>
+                <blockquote class="block-47-quote">
+                  <h6> Ethe</h6>
+                  <p>Simptomat e COVID-19 janë të ngjashme me ato të gripit të zakonshëm. Ndaj mund të ndodhë që të keni ethe herë pas here. </p>
+                </blockquote>
+              </div>
+
+          </div>
+          <div class="col-md-6">
+            
+            <div class="block-47 d-flex mb-5">
+                <div class="block-47-image">
+                  <img src="images/cough1.jpg" alt="Image placeholder" class="img-fluid" id="img-block">
+                </div>
+                <blockquote class="block-47-quote">
+                  <h6> Kollë e thatë</h6>
+                  <p>Një nga simptomat është kolla e thatë. Këtë mund ta vëreni nëse nuk keni sekrecion gjatë kollitjes. </p>
+                </blockquote>
+              </div>
+
+
+          </div>
+
+          <div class="col-md-6">
+            
+              <div class="block-47 d-flex mb-5">
+                <div class="block-47-image">
+                  <img src="images/tired.jpg" alt="Image placeholder" class="img-fluid" id="img-block">
+                </div>
+                <blockquote class="block-47-quote">
+                  <h6>Lodhje</h6>
+                  <p>E ndjeni veten të lodhur edhe nëse nuk keni bërë ndonjë aktivitet që kërkon shumë energji. Mund të keni gjithashtu edhe dhimbje të nyjeve.
+                  </p>
+                
+                </blockquote>
+              </div>
+
+          </div>
+          <div class="col-md-6">
+            
+            <div class="block-47 d-flex mb-5">
+                <div class="block-47-image">
+                  <img src="images/breathing.jpg" alt="Image placeholder" class="img-fluid" id="img-block">
+                </div>
+                <blockquote class="block-47-quote">
+                  <h6>Vështirësi në frymëmarrje</h6>
+                  <p> Keni vështirësi gjatë frymëmarrjes ndonëse nuk keni pasur probleme të tilla më parë. Nuk mund të mbusheni me frymë.</p>
+                </blockquote>
+              </div>
+
+          </div>
+
+        </div>
+        <div class="numri-telefonit">
+          <p class="numrat">Për çdo dyshim që keni, thirrni në numrin</p>
+              <h2 class="numrat"> <strong>038 200 80 800</strong></h2>
+
+            </div>
+      </div>
+    </section>
+
+
+    <section class="site-section border-top pb-0"  id="section-services">
+      <div class="container">
+
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <div class="section-heading text-center">
+              <h2><strong>Parandalimi</strong></h2>
+              <h4>Kontribuo që të mos përhapet COVID-19!</h4>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-md-6 col-lg-4 text-center mb-5">
+            <div class="site-service-item site-animate" data-animate-effect="fadeIn">
+              
+              
+                <img class="icon" src="images/stayhome.png" alt="Image placeholder" id="img-para">
+              
+              <h3 class="mb-4">Rri në shtëpi.</h3>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 text-center mb-5">
+            <div class="site-service-item site-animate" data-animate-effect="fadeIn">
+              <img class="icon" src="images/distance.png" alt="Image placeholder" id="img-para">
+              <h3 class="mb-4">Mbaj distancën.</h3>
+              
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 text-center mb-5">
+            <div class="site-service-item site-animate" data-animate-effect="fadeIn">
+              <img class="icon" src="images/washhands.png" alt="Image placeholder" id="img-para">
+              <h3 class="mb-4">Pastro duart sa më shpesh.</h3>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4 text-center mb-5">
+            <div class="site-service-item site-animate" data-animate-effect="fadeIn">
+              <img class="icon" src="images/cough.png" alt="Image placeholder" id="img-para">
+              <h3 class="mb-4">Mbulo gojën gjatë kollitjes.</h3>
+              
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 text-center mb-5">
+            <div class="site-service-item site-animate" data-animate-effect="fadeIn">
+              <img class="icon" src="images/medicalmask.png" alt="Image placeholder" id="img-para">
+              <h3 class="mb-4">Vendos maskën dhe dorezat.</h3>
+              
+              
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 text-center mb-5">
+            <div class="site-service-item site-animate" data-animate-effect="fadeIn">
+              <img class="icon" src="images/touchingface.png" alt="Image placeholder" id="img-para">
+              <h3 class="mb-4">Shmang prekjen e fytyrës.</h3>
+              
+              
+            </div>
+          </div>
+
+        </div>
+        <div class="numri-telefonit" id="nr-psikolog">
+          <p class="numrat" id="teksti-psiko">Nëse keni vështirësi psikologjike në përballimin e izolimit dhe karantinës, ju lutemi të thirrni këtë numër dhe do të lidheni me psikologun.</p>
+              <h2 class="numrat" id="nr-tel-psiko"> <strong>038 200 80 890</strong></h2>
+
+            </div>
+      </div>
+    </section>
+    
+
+    <section class="site-section" id="section-portfolio">
+      <div class="container">
+        <div class="row">
+          <div class="section-heading text-center col-md-12">
+              <h2> <strong>Si ta trajtojmë COVID-19?</strong></h2>
+            </div>
+        </div>
+       <div class="row site-section">
+          <div class="col-md-8">
+            <p><img src="images/treatment.jpg" alt="" class="img-fluid" id="treat-pic"></p>
+          </div>
+          <div class="col-md-4">
+            <h3 class="mb-3">Konsultohuni me mjekun</h3>
+            <p>Në momentin që keni vërejtur se keni shumicën e simptomave të COVID-19, duhet të konsultoheni me mjekun tuaj familjar ose thirrni në numrin <strong>038 200 80 800</strong>.</p>
+
+            <h3 class="mb-3">Kujdesuni për veten</h3>
+
+            <ul class="site-list">
+              <li class="site-check">Pushoni.</li>
+              <li class="site-check">Pini shumë lëngje.</li>
+              <li class="site-check">Ushqehuni shëndetshëm.</li>
+              <li class="site-check">Distancohuni nga familja.</li>
+              <li class="site-check">Pastroni dhe dezinfektoni sipërfaqet ku keni prekur.</li>
+            </ul>
+
+          </div>
+
+        </div>
+
+           
+      </div>
+
+    </section>
+    <!-- .section -->
+
+    <section class="site-section bg-light " id="section-resume">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-5">
+            <div class="section-heading text-center">
+              <h2> <strong>Statistikat për COVID-19</strong></h2>
+            </div>
+          </div>
+          <div class="col-md-6" id="rastet-bote">
+            <h3 class="mb-5"> <u>Botë</u></h3>
+            <h4>Numri total i rasteve: <strong>2 714 747</strong></h4>
+            <h4>Numri total i viktimave: <strong>190 392</strong></h4>
+            <h4>Numri total i të shëruarve: <strong>744 886</strong> </h4>
+
+            <h3 class="mb-5" id="titulli-kosove"> <u>Kosovë</u></h3>
+            <h4>Numri total i rasteve: <strong>669</strong></h4>
+            <h4>Numri total i viktimave: <strong>19</strong></h4>
+            <h4>Numri total i të shëruarve: <strong>159</strong> </h4>
+            <h4 id="nentitull-rastet"> <u>Numri i rasteve në bazë të komunave</u> </h4>
+          </div>
+          
+          <div id="chart1div"></div>
+          <h1>_</h1>
+          <div id="chart2div"></div>
+          <h1>_</h1>
+          <div id="chart3div"></div>
+          <h4 class="mb-5" id="titulli-ndihmat"> <u>Numri i rasteve të të infektuarve në distrikte</u></h4>
+          <div id="chart4div"></div>
+          <h4 class="mb-5" id="titulli-ndihmat"> <u>Numri i rasteve në 10 ditët e fundit (14-23 Prill)</u></h4>
+          <div id="chart5div"></div>
+          
+
+          </div>
+        </div>
+      </div>
+    </section> <!-- .section -->
+
+    <section class="site-section" id="section-blog">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-5">
+            <div class="section-heading text-center">
+              <h2><strong>Orari i lëvizjes</strong></h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="row site-section" id="orari-komplet">
+          <div class="col-md-8">
+            <p><img src="images/foto5.jpg" alt="" class="img-fluid" id="orari-pic"></p>
+          </div>
+          <div class="col-md-4" id="tex-eval">
+            <h3 class="mb-3">Informohuni rreth orarit tuaj të lëvizjes për ditën e sotme.</h3>
+          
+            <h3>Kliko më poshtë ↓</h3>
+
+
+
+            <h3 id="covid-evaluator"><a href="https://evaluate.kosova.health/?type=schedule&lang=sq" target="_blank">COVID-19 Evaluator</a></h3>
+          </div>
+        </div>
+            </div>
+          </div>
+
+        
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section bg-light" id="section-contact">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-5">
+            <div class="section-heading text-center">
+              <h2> <strong>Kontakti</strong> </h2>
+            </div>
+          </div>
+          
+          <div class="col-md-7 mb-5 mb-md-0">
+            <form action="" class="site-form">
+              <h3 class="mb-5">Raporto raste me COVID-19</h3>
+              <div class="form-group">
+                <input type="text" class="form-control px-3 py-4" placeholder="Emri dhe mbiemri">
+              </div>
+              <div class="form-group">
+                <input type="email" class="form-control px-3 py-4" placeholder="E-mail">
+              </div>
+              <div class="form-group">
+                <input type="email" class="form-control px-3 py-4" placeholder="Numri i telefonit">
+              </div>
+              <div class="form-group mb-5">
+                <textarea class="form-control px-3 py-4"cols="30" rows="10" placeholder="Mesazhi juaj"></textarea>
+              </div>
+              <div class="form-group">
+                <input type="submit" class="btn btn-primary  px-4 py-3" value="Dërgo">
+              </div>
+            </form>
+          </div>
+          <div class="col-md-5 pl-md-5">
+            <h3 class="mb-5">INFO</h3>
+            <ul class="site-contact-details">
+              <li>
+                <span class="text-uppercase">Email</span>
+                site@gmail.com
+              </li>
+              <li>
+                <span class="text-uppercase">Numri i telefonit</span>
+                +30 976 1382 9921
+              </li>
+              <li>
+                <span class="text-uppercase">Fax</span>
+                +30 976 1382 9922
+              </li>
+              <li>
+                <span class="text-uppercase">Adresa</span>
+                Kosovë, KS <br>
+                Suharekë, 23 000<br>
+                Rruga "Brigada 123"
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row mb-3">
+          <div class="col-md-12 text-center">
+            <p>
+              <a href="#" class="social-item"><span class="icon-facebook2"></span></a>
+              <a href="#" class="social-item"><span class="icon-twitter"></span></a>
+              <a href="#" class="social-item"><span class="icon-instagram2"></span></a>
+              <a href="#" class="social-item"><span class="icon-linkedin2"></span></a>
+              <a href="#" class="social-item"><span class="icon-vimeo"></span></a>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+            <p class="col-12 text-center">
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" class="text-primary">Colorlib</a>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+        </div>
+      </div>
+    </footer>
+
+    
+    
+   
+    <script src="js/vendor/jquery.min.js"></script>
+
+    <script src="js/vendor/popper.min.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    
+    <script src="js/vendor/jquery.easing.1.3.js"></script>
+    <script src="js/vendor/jquery.stellar.min.js"></script>
+    <script src="js/vendor/jquery.waypoints.min.js"></script>
+
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+    <script src="js/custom.js"></script>
+
+    <!-- Google Map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+    <script src="js/google-map.js"></script>
+
+  </body>
+</html>
